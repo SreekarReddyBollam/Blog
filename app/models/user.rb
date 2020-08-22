@@ -9,6 +9,8 @@ class User < ApplicationRecord
   has_many :users_liked_posts
   has_many :liked_posts, through: :users_liked_posts, source: :post, dependent: :destroy
 
+  has_many :followees_followers
+
   has_many :followers_relationships, foreign_key: :followee_id, class_name: 'FolloweesFollower'
   has_many :followers, through: :followers_relationships, source: :followee, dependent: :destroy
 

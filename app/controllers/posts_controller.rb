@@ -3,14 +3,14 @@
 class PostsController < ApplicationController
   before_action :authorized, only: %i[create update destroy]
 
-  before_action :resource_exist, only: %i[update destroy show]
+  before_action :params_exists?, only: %i[update destroy show]
 
   rescue_from BlogExceptions::BadRequestError, with: :bad_request
   rescue_from BlogExceptions::UnAuthorizedError, with: :deny_access
 
   def index
     @user = User.find_by({ id: params[:user_id] })
-    raise BadRequestError if @user.nil?
+    raise BlogExceptions::BadRequestError, 'User Not Found' if @user.nil?
 
     render json: @user.posts
   end
@@ -46,7 +46,7 @@ class PostsController < ApplicationController
 
   private
 
-  def resource_exist
+  def params_exists?
     raise BlogExceptions::BadRequestError unless params[:user_id].present? && params[:id]
   end
 

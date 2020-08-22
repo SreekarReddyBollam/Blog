@@ -24,9 +24,10 @@ class UsersController < ApplicationController
 
     if @user&.authenticate(params[:password])
       token = encode_token({ user_id: @user.id })
+      User.current_user = @user
       render json: { 'User': UserSerializer.new(@user), 'token': token }
     else
-      raise BlogExceptions::BadRequestError
+      raise BlogExceptions::BadRequestError, 'Please check username and password'
     end
   end
 
@@ -40,11 +41,7 @@ class UsersController < ApplicationController
 
   def update
     @user = User.find_by({ id: params[:id] })
-    @user.update_columns({
-                           username: params[:username],
-                           first_name: params[:first_name],
-                           last_name: params[:last_name]
-                         })
+    @user.update_columns(updatable_user_params)
     if @user.errors.any?
       render json: {
         'error': @user.errors
@@ -71,10 +68,16 @@ class UsersController < ApplicationController
   private
 
   def resource_exist
-    raise BlogExceptions::BadRequestError unless User.exists?({ id: params[:id] })
+    raise BlogExceptions::BadRequestError, 'User not found' unless User.exists?({ id: params[:id] })
   end
 
   def user_params
     params.permit(:username, :password, :last_name, :first_name)
+  end
+
+  def updatable_user_params
+    hash = {}
+    %i[username first_name last_name password].each { |item| hash[item] = params[item] if params[item].present? }
+    hash
   end
 end
