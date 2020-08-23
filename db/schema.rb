@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_20_191247) do
+ActiveRecord::Schema.define(version: 2020_08_23_074107) do
 
   create_table "followees_followers", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "followee_id"
@@ -36,6 +36,8 @@ ActiveRecord::Schema.define(version: 2020_08_20_191247) do
     t.string "password_digest", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "bio", default: ""
+    t.string "profile_pic", default: ""
   end
 
   create_table "users_liked_posts", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|

@@ -72,12 +72,14 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.permit(:username, :password, :last_name, :first_name)
+    params.permit(:username, :password, :last_name, :first_name, :bio, :profile_pic)
   end
 
   def updatable_user_params
     hash = {}
-    %i[username first_name last_name password].each { |item| hash[item] = params[item] if params[item].present? }
+    %i[username first_name last_name password bio profile_pic].each do |item|
+      hash[item] = params[item] if params[item].present?
+    end
     hash
   end
 end

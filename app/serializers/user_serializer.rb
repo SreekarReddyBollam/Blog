@@ -3,7 +3,7 @@
 class UserSerializer < BaseSerializer
   has_many :posts, serializer: PostPreviewSerializer
 
-  attributes :id, :username
+  attributes :id, :username, :bio, :profile_pic
 
   attribute :first_name, if: :current_user?
   attribute :last_name, if: :current_user?
