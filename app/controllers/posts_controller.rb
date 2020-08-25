@@ -15,6 +15,10 @@ class PostsController < ApplicationController
     render json: @user.posts
   end
 
+  def all
+    render json: Post.all
+  end
+
   def show
     @post = Post.find_by(id: params[:id])
     render json: @post
