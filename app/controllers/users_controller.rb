@@ -8,14 +8,17 @@ class UsersController < ApplicationController
 
   # REGISTER
   def create
-    @user = User.create!(user_params)
+    @user = User.create(user_params)
     if @user.errors.any?
       render json: {
         'error': @user.errors
       }, status: :bad_request
+    else
+      token = encode_token({ user_id: @user.id })
+      render json: @user, meta: {
+        token: token
+      }
     end
-    token = encode_token({ user_id: @user.id })
-    render json: { 'User': UserSerializer.new(@user), 'token': token }
   end
 
   # LOGGING IN
@@ -25,7 +28,9 @@ class UsersController < ApplicationController
     if @user&.authenticate(params[:password])
       token = encode_token({ user_id: @user.id })
       User.current_user = @user
-      render json: { 'User': UserSerializer.new(@user), 'token': token }
+      render json: @user, meta: {
+        token: token
+      }
     else
       raise BlogExceptions::BadRequestError, 'Please check username and password'
     end

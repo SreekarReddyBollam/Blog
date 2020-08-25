@@ -32,7 +32,7 @@ class User < ApplicationRecord
   }
   validates :password, format: {
     with: /(?=.*[A-Z])(?=.*[!@#\$\&^*])(?=.*[0-9]).{8,}/,
-    message: 'Password must of at-least 8 characters with one special character and a number'
+    message: 'Password must be of at-least 8 characters with one special character and a number'
   }
   validates :username, :first_name, :last_name, :password, presence: true
 end

@@ -13,5 +13,5 @@ class Post < ApplicationRecord
     raise BlogExceptions::UnAuthorizedError unless User.current_user&.id == record.user_id
   end
 
-  validates :title, :user_id, presence: true
+  validates :title, presence: true
 end

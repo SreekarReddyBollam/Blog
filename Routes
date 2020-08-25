@@ -1,4 +1,7 @@
                                Prefix Verb   URI Pattern                                                                              Controller#Action
+                       like_user_post GET    /users/:user_id/posts/:id/like(.:format)                                                 likes#like
+                     unlike_user_post GET    /users/:user_id/posts/:id/unlike(.:format)                                               likes#unlike
+                      likes_user_post GET    /users/:user_id/posts/:id/likes(.:format)                                                likes#likes
                            user_posts GET    /users/:user_id/posts(.:format)                                                          posts#index
                                       POST   /users/:user_id/posts(.:format)                                                          posts#create
                             user_post GET    /users/:user_id/posts/:id(.:format)                                                      posts#show
@@ -6,8 +9,9 @@
                                       PUT    /users/:user_id/posts/:id(.:format)                                                      posts#update
                                       DELETE /users/:user_id/posts/:id(.:format)                                                      posts#destroy
                        user_followers GET    /users/:user_id/followers(.:format)                                                      followers#index
-                                      POST   /users/:user_id/followers(.:format)                                                      followers#create
-                        user_follower DELETE /users/:user_id/followers/:id(.:format)                                                  followers#destroy
+                        user_follower PATCH  /users/:user_id/followers/:id(.:format)                                                  followers#update
+                                      PUT    /users/:user_id/followers/:id(.:format)                                                  followers#update
+                                      DELETE /users/:user_id/followers/:id(.:format)                                                  followers#destroy
                                 users GET    /users(.:format)                                                                         users#index
                                       POST   /users(.:format)                                                                         users#create
                                  user GET    /users/:id(.:format)                                                                     users#show
@@ -16,6 +20,7 @@
                                       DELETE /users/:id(.:format)                                                                     users#destroy
                                 login POST   /login(.:format)                                                                         users#login
                                signup POST   /signup(.:format)                                                                        users#create
+                                posts GET    /posts(.:format)                                                                         posts#all
         rails_postmark_inbound_emails POST   /rails/action_mailbox/postmark/inbound_emails(.:format)                                  action_mailbox/ingresses/postmark/inbound_emails#create
            rails_relay_inbound_emails POST   /rails/action_mailbox/relay/inbound_emails(.:format)                                     action_mailbox/ingresses/relay/inbound_emails#create
         rails_sendgrid_inbound_emails POST   /rails/action_mailbox/sendgrid/inbound_emails(.:format)                                  action_mailbox/ingresses/sendgrid/inbound_emails#create
