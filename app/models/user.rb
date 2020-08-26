@@ -5,7 +5,7 @@ class User < ApplicationRecord
 
   class_attribute :current_user
 
-  has_many :posts, dependent: :destroy
+  has_many :posts, -> { order('updated_at DESC') }, dependent: :destroy
   has_many :users_liked_posts
   has_many :liked_posts, through: :users_liked_posts, source: :post, dependent: :destroy
 
@@ -16,7 +16,6 @@ class User < ApplicationRecord
 
   has_many :followees_relationships, foreign_key: :follower_id, class_name: 'FolloweesFollower'
   has_many :following, through: :followees_relationships, source: :follower, dependent: :destroy
-
 
   before_update do |record|
     raise BlogExceptions::UnAuthorizedError unless User.current_user&.id == record.id

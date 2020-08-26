@@ -16,7 +16,7 @@ class PostsController < ApplicationController
   end
 
   def all
-    render json: Post.all
+    render json: Post.all.order('updated_at DESC')
   end
 
   def show
