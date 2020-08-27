@@ -3,6 +3,7 @@
 class UsersController < ApplicationController
   before_action :authorized, only: %i[destroy update]
   before_action :resource_exist, only: %i[destroy update]
+
   rescue_from BlogExceptions::BadRequestError, with: :bad_request
   rescue_from BlogExceptions::UnAuthorizedError, with: :deny_access
 
@@ -14,7 +15,9 @@ class UsersController < ApplicationController
         'error': @user.errors
       }, status: :bad_request
     else
-      token = encode_token({ user_id: @user.id })
+      token = encode_token({ id: @user.id, username: @user.username })
+      User.current_user = @user;
+      set_token token
       render json: @user, meta: {
         token: token
       }
@@ -26,7 +29,8 @@ class UsersController < ApplicationController
     @user = User.find_by(username: params[:username])
 
     if @user&.authenticate(params[:password])
-      token = encode_token({ user_id: @user.id })
+      token = encode_token({ id: @user.id, username: @user.username })
+      set_token token
       User.current_user = @user
       render json: @user, meta: {
         token: token
@@ -34,6 +38,13 @@ class UsersController < ApplicationController
     else
       raise BlogExceptions::BadRequestError, 'Please check username and password'
     end
+  end
+
+  def logout
+    delete_token
+    render json: {
+      status: 'Done'
+    }
   end
 
   def show
@@ -86,5 +97,13 @@ class UsersController < ApplicationController
       hash[item] = params[item] if params[item].present?
     end
     hash
+  end
+
+  def set_token(token)
+    cookies[:token] = { value: token, expires: 1.hour.from_now }
+  end
+
+  def delete_token
+    cookies.delete(:token)
   end
 end

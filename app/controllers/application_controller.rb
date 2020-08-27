@@ -3,17 +3,15 @@
 class ApplicationController < ActionController::API
   rescue_from BlogExceptions::UnAuthorizedError, with: :deny_access
 
+  include ActionController::Cookies
+
   def encode_token(payload)
     JWT.encode(payload, 's3cr3t')
   end
 
-  def auth_header
-    request.headers['Authorization']
-  end
-
   def decoded_token
-    if auth_header
-      token = auth_header.split(' ')[1]
+    token = cookies[:token]
+    if token
       begin
         JWT.decode(token, 's3cr3t', true, algorithm: 'HS256')
       rescue JWT::DecodeError
@@ -24,7 +22,7 @@ class ApplicationController < ActionController::API
 
   def logged_in_user
     if decoded_token
-      user_id = decoded_token[0]['user_id']
+      user_id = decoded_token[0]['id']
       User.current_user = User.find_by(id: user_id)
     end
   end
