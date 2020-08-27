@@ -34,9 +34,6 @@ class LikesController < ApplicationController
     unless User.exists?(params[:user_id]) && Post.exists?(params[:id])
       raise BlogExceptions::BadRequestError, "User or Post doesn't exist"
     end
-    unless Post.find_by({ id: params[:id] }).user_id == params[:user_id]
-      raise BlogExceptions::BadRequestError, "User or Post doesn't exist"
-    end
   end
 
   def params_exists?
