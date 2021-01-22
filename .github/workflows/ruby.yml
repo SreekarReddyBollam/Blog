@@ -18,7 +18,9 @@ jobs:
 
     runs-on: ubuntu-latest
     steps:
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJSON(github) }}
-        run: echo "$GITHUB_CONTEXT"
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1 # ruby version and bundler version are picked by .ruby-version and Gemfile.lock
+        with:
+          bundler-cache: true  
+      - run: bundle install
+      - run: bundle exec rails db:setup    
