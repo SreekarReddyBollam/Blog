@@ -25,4 +25,5 @@ jobs:
         with:
           bundler-cache: true
       - run: ls -lrt ./vendor/bundle
+      - run: sudo apt-get install tree
       - run: tree ./vendor/bundle  
