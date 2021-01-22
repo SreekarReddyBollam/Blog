@@ -18,6 +18,7 @@ jobs:
     name: Runs Rspec
     runs-on: ubuntu-latest
     steps:
+      - id: ruby_setup
       - name: Check out repo code
         uses: actions/checkout@v2
       - name: Setup ruby
@@ -26,4 +27,5 @@ jobs:
           bundler-cache: true
       - run: ls -lrt ./vendor/bundle
       - run: sudo apt-get install tree
-      - run: tree ./vendor/bundle  
+      - run: tree ./vendor/bundle 
+      - run: echo "${{steps.ruby_setup.outputs}}}"   
