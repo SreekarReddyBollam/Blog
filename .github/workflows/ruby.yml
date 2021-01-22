@@ -17,22 +17,6 @@ jobs:
   test:
     name: Runs Rspec
     runs-on: ubuntu-latest
-    env:
-      RAILS_ENV: test
-      K123_CMS_DB_PWD: k123
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_USER: k123cms
-          POSTGRES_PASSWORD: k123
-        ports:
-          - "5432:5432"
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
     steps:
       - name: Check out repo code
         uses: actions/checkout@v2
@@ -40,15 +24,5 @@ jobs:
         uses: ruby/setup-ruby@v1 # ruby version and bundler version are picked by .ruby-version and Gemfile.lock
         with:
           bundler-cache: true
-      - name: Install libpq
-        run: sudo apt-get update && sudo apt-get install libpq-dev
-  lint:
-    name: Rubocop lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-      - name: Setup pronto
-        run: gem install pronto pronto-rubocop
+      - run: ls -lrt ./vendor/bundle
+      - run: tree ./vendor/bundle  
