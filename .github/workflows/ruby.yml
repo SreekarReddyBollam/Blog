@@ -10,10 +10,13 @@ name: Ruby
 on:
   release:
     types: [published]
+  push:
+    branches:
+      - master
 
 jobs:
   test:
     name: Runs Rspec
     runs-on: ubuntu-latest
     steps:
-      - run: echo 'Hello there'
+      - run: echo '${{github}}'
