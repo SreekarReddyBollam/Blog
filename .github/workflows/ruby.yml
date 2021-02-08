@@ -8,24 +8,12 @@
 name: Ruby
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  release:
+    types: [published]
 
 jobs:
   test:
     name: Runs Rspec
     runs-on: ubuntu-latest
     steps:
-      - id: ruby_setup
-      - name: Check out repo code
-        uses: actions/checkout@v2
-      - name: Setup ruby
-        uses: ruby/setup-ruby@v1 # ruby version and bundler version are picked by .ruby-version and Gemfile.lock
-        with:
-          bundler-cache: true
-      - run: ls -lrt ./vendor/bundle
-      - run: sudo apt-get install tree
-      - run: tree ./vendor/bundle 
-      - run: echo "${{steps.ruby_setup.outputs}}}"   
+      - run: echo 'Hello there'
