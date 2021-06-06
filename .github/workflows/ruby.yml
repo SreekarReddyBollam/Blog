@@ -19,4 +19,4 @@ jobs:
     name: Runs Rspec
     runs-on: ubuntu-latest
     steps:
-      - run: echo '${{github}}'
+      - run: ls -lrt /tmp/.buildx-cache
