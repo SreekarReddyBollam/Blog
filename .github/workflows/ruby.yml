@@ -19,4 +19,7 @@ jobs:
     name: Runs Rspec
     runs-on: ubuntu-latest
     steps:
-      - run: ls -lrt /tmp/.buildx-cache
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name:  check the cache
+        run: ls -lrt /tmp/
