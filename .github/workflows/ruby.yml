@@ -44,3 +44,30 @@ jobs:
         run: |
           rm -rf /tmp/.buildx-cache
           mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+  job2:
+    name: Job 2
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: run
+        run: echo "hello 2"
+  job3:
+    name: Job 3
+    needs: job2
+    runs-on: ubuntu-latest
+    steps:
+     - name: Checkout
+       uses: actions/checkout@v2
+     - name: run
+       run: echo "hello 3"
+  job4:
+    name: Job 4
+    needs: job3
+    runs-on: ubuntu-latest
+    steps:
+     - name: Checkout
+       uses: actions/checkout@v2
+     - name: run
+       run: echo "hello 4"
